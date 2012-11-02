@@ -18,7 +18,8 @@ public class Game extends Mapping implements Parcelable {
 	
 	private static String API_URI = "games";
 	private User creator;
-	private String time;
+	private String startTime;
+	private String endTime;
 	private String name;
 	private GameType gameType;
 	
@@ -34,9 +35,12 @@ public class Game extends Mapping implements Parcelable {
 	public Game(Map<String, Object> game)
 	{
 		super(game);
+
+		if (game.containsKey("start_time"))
+			this.setStartTime((String)game.get("start_time"));
 		
-		if (game.containsKey("time"))
-			this.setTime((String)game.get("time"));
+		if (game.containsKey("end_time"))
+			this.setEndTime((String)game.get("end_time"));
 		
 		if (game.containsKey("name"))
 			this.setName((String)game.get("name"));
@@ -71,25 +75,6 @@ public class Game extends Mapping implements Parcelable {
 		this.setAttribute("user", creator.getMap());
 	}
 
-
-	/**
-	 * @return the time
-	 */
-	public String getTime() 
-	{
-		return time;
-	}
-
-
-	/**
-	 * @param time the time to set
-	 */
-	public void setTime(String time) {
-		this.time = time;
-		
-		this.setAttribute("time", time);
-	}
-
 	/**
 	 * @return the name
 	 */
@@ -122,7 +107,7 @@ public class Game extends Mapping implements Parcelable {
 		in.readStringList(data);
 		
 		this.setName(data.get(0));
-		this.setTime(data.get(1));
+		this.setEndTime(data.get(1));
 		this.setId(Integer.parseInt(data.get(2)));
 		
 		this.setCreator((User)in.readParcelable(User.class.getClassLoader()));
@@ -140,7 +125,7 @@ public class Game extends Mapping implements Parcelable {
 		ArrayList<String> data = dest.createStringArrayList ();
 		
 		data.add(this.getName());
-		data.add(this.getTime());
+		data.add(this.getEndTime());
 		data.add(this.getId().toString());
 		
 		dest.writeStringList(data);
@@ -150,6 +135,38 @@ public class Game extends Mapping implements Parcelable {
 	}
 	
     /**
+	 * @return the startTime
+	 */
+	public String getStartTime() {
+		return startTime;
+	}
+
+	/**
+	 * @param startTime the startTime to set
+	 */
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+		
+		this.setAttribute("start_time", startTime);
+	}
+
+	/**
+	 * @return the endTime
+	 */
+	public String getEndTime() {
+		return endTime;
+	}
+
+	/**
+	 * @param endTime the endTime to set
+	 */
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+		
+		this.setAttribute("end_time", endTime);
+	}
+
+	/**
     *
     * This field is needed for Android to be able to
     * create new objects, individually or as arrays.
